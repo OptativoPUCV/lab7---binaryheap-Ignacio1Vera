@@ -32,8 +32,29 @@ void* heap_top(Heap* pq) {
 
 
 
-void heap_push(Heap* pq, void* data, int priority){
-
+void heap_push(Heap* pq, void* data, int p) 
+{
+    if (pq->size == pq->capac) 
+    {
+        pq->capac = pq->capac * 2 + 1;
+        pq->heapArray = (heapElem*)realloc(pq->heapArray, pq->capac * sizeof(heapElem));
+        if (pq->heapArray == NULL) 
+        {
+            fprintf(stderr, "Error: No se pudo asignar memoria para el arreglo del montículo.\n");
+            exit(1);
+        }
+    }
+    heapElem newItem;
+    newItem.data = data;
+    newItem.priority = p;
+    int i = pq->size;
+    pq->size++;
+    pq->heapArray[i] = newItem;
+    while (i > 0 && pq->heapArray[i].priority > pq->heapArray[(i - 1) / 2].priority) 
+    {
+        swap(&pq->heapArray[i], &pq->heapArray[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
 }
 
 

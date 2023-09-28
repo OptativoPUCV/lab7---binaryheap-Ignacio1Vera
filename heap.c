@@ -17,8 +17,17 @@ typedef struct Heap{
 } Heap;
 
 
-void* heap_top(Heap* pq){
-    return NULL;
+void swap(heapElem* a, heapElem* b) {
+    heapElem temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void* heap_top(Heap* pq) {
+    if (pq->size == 0) {
+        return NULL;
+    }
+    return pq->heapArray[0].data;
 }
 
 
@@ -32,7 +41,20 @@ void heap_pop(Heap* pq){
 
 }
 
-Heap* createHeap(){
-
-   return NULL;
+Heap* createHeap() {
+    Heap* heap = (Heap*)malloc(sizeof(Heap));
+    if (heap == NULL) {
+        fprintf(stderr, "Error: No se pudo asignar memoria para el montículo.\n");
+        exit(1);
+    }
+    
+    heap->capac = 3;
+    heap->size = 0;
+    heap->heapArray = (heapElem*)malloc(heap->capac * sizeof(heapElem));
+    if (heap->heapArray == NULL) {
+        fprintf(stderr, "Error: No se pudo asignar memoria para el arreglo del montículo.\n");
+        exit(1);
+    }
+    
+    return heap;
 }
